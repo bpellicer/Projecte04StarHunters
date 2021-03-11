@@ -1,0 +1,19 @@
+CREATE DATABASE starhunters;
+USE starhunters;
+
+CREATE TABLE games(
+	game_id 		INT UNSIGNED AUTO_INCREMENT,
+    game_code 		VARCHAR(25) NOT NULL,
+    game_date		DATE NOT NULL,
+    CONSTRAINT PK_GAMES_ID PRIMARY KEY (game_id)
+);
+
+CREATE TABLE players(
+	player_id		INT UNSIGNED AUTO_INCREMENT,
+    nickname		VARCHAR(25) NOT NULL,
+    stars			TINYINT UNSIGNED NOT NULL,
+    game_id			INT UNSIGNED NOT NULL,
+    CONSTRAINT PK_PLAYERS_ID PRIMARY KEY (player_id),
+    CONSTRAINT FK_GAMES_ID_PLAYERS FOREIGN KEY (game_id)
+    	REFERENCES games (game_id)
+);
