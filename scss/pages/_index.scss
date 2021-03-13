@@ -1,0 +1,10 @@
+@use '../abstracts' as *;
+
+#hero {
+	margin-top: 20vh;
+	text-align: center;
+
+	.title {
+		margin-bottom: 4rem;
+	}
+}

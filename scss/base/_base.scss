@@ -1,0 +1,26 @@
+@use '../abstracts' as *;
+
+.title {
+	position: relative;
+	display: inline-block;
+
+	img {
+		position: absolute;
+		top: -25px;
+		right: -88px;
+		transform: rotate(-25deg);
+	}
+}
+
+#moon {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+}
+
+#spaceship {
+	position: absolute;
+	left: 30rem;
+	top: 20rem;
+	transform: rotate(65deg);
+}

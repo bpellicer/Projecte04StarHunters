@@ -1,0 +1,26 @@
+@use '../abstracts' as *;
+
+.btn {
+	margin: 1rem .5rem;
+	display: inline-block;
+	padding: .3em 1.25em;
+	font-size: 3rem;
+	color: $clr-dark;
+	border: 2px solid transparent;
+	cursor: pointer;
+	transition: transform 250ms ease-in;
+
+	&:hover {
+		transform: scale(1.1);
+	}
+
+	&.primary {
+		background: $clr-pri;
+
+		&.inverse {
+			color: $clr-pri;
+			background: transparent;
+			border-color: $clr-pri;
+		}
+	}
+}
