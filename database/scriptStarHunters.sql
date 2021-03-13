@@ -1,19 +1,36 @@
-CREATE DATABASE starhunters;
-USE starhunters;
+-- M14 DUAL - UF2 Projectes
+-- Projecte 04: Start Hunters
+-- Authors: Bernat Pellicer & Jordi Hernandez
 
-CREATE TABLE games(
-	game_id 		INT UNSIGNED AUTO_INCREMENT,
-    game_code 		VARCHAR(25) NOT NULL,
-    game_date		DATE NOT NULL,
-    CONSTRAINT PK_GAMES_ID PRIMARY KEY (game_id)
+DROP SCHEMA IF EXISTS `starhunters`;
+
+CREATE SCHEMA `starhunters`
+    DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
+
+USE `starhunters`;
+
+-- -------------
+-- GAMES TABLE
+-- -------------
+CREATE TABLE `games` (
+	`id`        INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `code`      VARCHAR(5)  NOT NULL COMMENT 'Public game code',
+    `date`      DATE        NOT NULL,
+    
+    CONSTRAINT PK_games PRIMARY KEY (`id`)
 );
 
-CREATE TABLE players(
-	player_id		INT UNSIGNED AUTO_INCREMENT,
-    nickname		VARCHAR(25) NOT NULL,
-    stars			TINYINT UNSIGNED NOT NULL,
-    game_id			INT UNSIGNED NOT NULL,
-    CONSTRAINT PK_PLAYERS_ID PRIMARY KEY (player_id),
-    CONSTRAINT FK_GAMES_ID_PLAYERS FOREIGN KEY (game_id)
-    	REFERENCES games (game_id)
+-- -------------
+-- PLAYERS TABLE
+-- -------------
+CREATE TABLE `players` (
+	`id`            INT UNSIGNED    NOT NULL AUTO_INCREMENT,
+    `nickname`		VARCHAR(25)     NOT NULL,
+    `score`			TINYINT UNSIGNED NOT NULL COMMENT 'Number of stars',
+    `game_id`       INT UNSIGNED    NOT NULL,
+
+    CONSTRAINT PK_players PRIMARY KEY (`id`),
+    CONSTRAINT FK_players_games FOREIGN KEY (`game_id`)
+    	REFERENCES `games` (`id`)
+            ON DELETE CASCADE
 );
