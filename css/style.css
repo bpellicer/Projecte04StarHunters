@@ -42,8 +42,8 @@ h3 {
 
 .title img {
   position: absolute;
-  top: -25px;
-  right: -88px;
+  top: -1.5em;
+  right: -5em;
   transform: rotate(-25deg);
 }
 
@@ -95,9 +95,15 @@ h3 {
   src: url("../fonts/VT323-Regular.ttf");
   font-weight: 400;
 }
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15vh;
+}
+
 main {
   width: 100%;
-  height: 100vh;
 }
 
 @font-face {
@@ -106,11 +112,27 @@ main {
   font-weight: 400;
 }
 #hero {
-  margin-top: 20vh;
+  height: 100vh;
   text-align: center;
 }
+
 #hero .title {
+  margin-top: 20vh;
   margin-bottom: 4rem;
+}
+
+#game-zone {
+  position: relative;
+  margin: auto;
+  width: 80vw;
+  height: 70vh;
+  border: 5px solid #2B2B2B;
+}
+
+#game-zone .spaceship {
+  position: absolute;
+  height: 88px;
+  width: 88px;
 }
 
 /*# sourceMappingURL=style.css.map */

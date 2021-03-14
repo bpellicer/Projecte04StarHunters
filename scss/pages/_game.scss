@@ -1,0 +1,15 @@
+@use '../abstracts' as *;
+
+#game-zone {
+	position: relative;
+	margin: auto;
+	width: 80vw;
+	height: 70vh;
+	border: 5px solid $clr-dark-light;
+
+	.spaceship {
+		position: absolute;
+		height: 88px;
+		width: 88px;
+	}
+}
