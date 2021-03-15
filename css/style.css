@@ -135,4 +135,10 @@ main {
   width: 88px;
 }
 
+#game-zone .star {
+  position: absolute;
+  height: 64px;
+  width: 64px;
+}
+
 /*# sourceMappingURL=style.css.map */
