@@ -36,6 +36,12 @@ function keyEvents() {
 				if (moveXAxis) return;
 				// check in which direction to move
 				let x = LEFT_KEY ? -1 : RIGHT_KEY ? 1 : 0;
+				if(x==-1){
+					$(".a").css("filter", "brightness(80%)");
+				}
+				else if(x == 1){
+					$(".d").css("filter", "brightness(80%)");
+				}
 				// start moving
 				moveXAxis = setInterval(() => {
 					spaceship.move(x, 0);
@@ -45,6 +51,12 @@ function keyEvents() {
 				if (moveYAxis) return;
 				// check in which direction move
 				let y = UP_KEY ? -1 : DOWN_KEY ? 1 : 0;
+				if(y==-1){
+					$(".w").css("filter", "brightness(80%)");
+				}
+				else if(y == 1){
+					$(".s").css("filter", "brightness(80%)");
+				}
 				// start moving
 				moveYAxis = setInterval(() => {
 					spaceship.move(0, y);
@@ -52,9 +64,22 @@ function keyEvents() {
 			}
 		} else if (e.type === 'keyup') {
 			if (LEFT_KEY || RIGHT_KEY) {
+				if(LEFT_KEY){
+					$(".a").css("filter", "brightness(100%)");
+				}
+				else{
+					$(".d").css("filter", "brightness(100%)");
+				}
+				
 				clearInterval(moveXAxis);
 				moveXAxis = null;
 			} else if (UP_KEY || DOWN_KEY) {
+				if(UP_KEY){
+					$(".w").css("filter", "brightness(100%)");
+				}
+				else{
+					$(".s").css("filter", "brightness(100%)");
+				}
 				clearInterval(moveYAxis);
 				moveYAxis = null;
 			}
