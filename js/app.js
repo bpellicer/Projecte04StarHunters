@@ -15,8 +15,9 @@ let spaceship = new Spaceship('player-spaceship');
 let generateStars = setInterval(() => {
 	// check how many stars there are
 	// it only can be 10 stars in game zone
-	if (stars.length === 10) return;
-	stars.push(new Star()); // add the star to the list
+	if (stars.length < 10) {
+		stars.push(new Star()); // add the star to the list
+	}
 }, 1000 * 1.5);
 
 /**

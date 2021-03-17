@@ -62,6 +62,39 @@ class Spaceship {
 		});
 
 		this.calcCoordinates();
+		this.checkImpact();
+	}
+
+	/**
+	 * Check if has impacted one of the stars
+	 */
+	checkImpact() {
+		function isOverlap(objOne, objTwo) {
+			let offsetOne = objOne.offset(),
+				offsetTwo = objTwo.offset(),
+				topOne = offsetOne.top,
+				topTwo = offsetTwo.top,
+				leftOne = offsetOne.left,
+				leftTwo = offsetTwo.left,
+				widthOne = objOne.width() -20,
+				widthTwo = objTwo.width() -20,
+				heightOne = objOne.height() -20,
+				heightTwo = objTwo.height() -20;
+
+			let leftTop = leftTwo > leftOne && leftTwo < leftOne+widthOne && topTwo > topOne && topTwo < topOne+heightOne,
+				rightTop = leftTwo+widthTwo > leftOne && leftTwo+widthTwo < leftOne+widthOne && topTwo > topOne && topTwo < topOne+heightOne,
+				leftBottom = leftTwo > leftOne && leftTwo < leftOne+widthOne && topTwo+heightTwo > topOne && topTwo+heightTwo < topOne+heightOne,
+				rightBottom = leftTwo+widthTwo > leftOne && leftTwo+widthTwo < leftOne+widthOne && topTwo+heightTwo > topOne && topTwo+heightTwo < topOne+heightOne;
+			
+			return leftTop || rightTop || leftBottom || rightBottom;
+		}
+
+		// check for every star if the spaceship is overlapping
+		stars.forEach(star => {
+			if (isOverlap(star.star, this.spaceship)) {
+				star.destroy();
+			}
+		});
 	}
 
 	/**
