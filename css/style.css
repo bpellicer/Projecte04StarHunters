@@ -160,38 +160,6 @@ h3 {
   border-color: #FFC32D;
 }
 
-.btn.primary.controll {
-  width: 50px;
-  height: 50px;
-  margin: 0%;
-  padding: 0%;
-  text-align: center;
-}
-
-.btn.primary.controll.w {
-  position: absolute;
-  left: 30%;
-  bottom: 8.5%;
-}
-
-.btn.primary.controll.a {
-  position: absolute;
-  left: 26.5%;
-  bottom: 1%;
-}
-
-.btn.primary.controll.s {
-  position: absolute;
-  left: 30%;
-  bottom: 1%;
-}
-
-.btn.primary.controll.d {
-  position: absolute;
-  left: 33.5%;
-  bottom: 1%;
-}
-
 @font-face {
   font-family: "VT323";
   src: url("../fonts/VT323-Regular.ttf");
@@ -246,6 +214,39 @@ main h2 {
   position: absolute;
   height: 64px;
   width: 64px;
+}
+
+#spaceship-controls {
+  margin: 1.5rem auto;
+  width: fit-content;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0.5em;
+  grid-row-gap: 0.5em;
+}
+
+#spaceship-controls div {
+  width: 50px;
+  height: 50px;
+  padding: 0.2em;
+  color: #1A1A1A;
+  background: #FFC32D;
+  text-align: center;
+  font-size: 2rem;
+}
+
+#spaceship-controls div.w {
+  grid-column: 2/3;
+}
+
+#spaceship-controls div.a {
+  grid-column: 1/2;
+}
+
+#spaceship-controls .press {
+  filter: brightness(80%) !important;
+  transform: scale(0.9) !important;
 }
 
 /*# sourceMappingURL=style.css.map */

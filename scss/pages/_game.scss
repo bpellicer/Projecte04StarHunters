@@ -19,3 +19,35 @@
 		width: 64px;
 	}
 }
+
+#spaceship-controls {
+	margin: 1.5rem auto;
+	width: fit-content;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	grid-column-gap: .5em;
+	grid-row-gap: .5em;
+
+	div {
+		width: 50px;
+		height: 50px;
+		padding: .2em;
+		color: $clr-dark;
+		background: $clr-pri;
+		text-align: center;
+		font-size: 2rem;
+
+		&.w {
+			grid-column: 2/3;
+		}
+		&.a {
+			grid-column: 1/2;
+		}
+
+	}
+	.press {
+		filter: brightness(80%) !important;
+		transform: scale(.9) !important;
+	}
+}
