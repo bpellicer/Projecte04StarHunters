@@ -11,28 +11,46 @@
 	<script src="js/Spaceship.js"></script>
 	<script src="js/Star.js"></script>
 	<script src="js/app.js" defer></script>
-	
+
 </head>
 
 <body>
-	<header>
-		<div class="title">
-			<h2>Star Hunters</h2>
-			<img src="images/icons/star.png" alt="8 bits star drawing" height="64">
-		</div>
-	</header>
 
-	<main>
-		<div id="game-zone">
-			<img src="images/icons/spaceship_red.png" alt="8 bits spaceship" id="player-spaceship" class="spaceship">
+	<div id="nickname-form">
+		<div id="hero">
+			<div class="title">
+				<h1>Star Hunters</h1>
+				<img src="images/icons/star.png" alt="8 bits star drawing" height="88">
+			</div>
+			<form>
+				<div>
+					<input type="text" name="nickname" id="nickname" placeholder="Enter nickname" autofocus>
+				</div>
+				<input type="submit" value="Play" class="btn primary">
+			</form>
 		</div>
-		<div id="spaceship-controls">
-			<div class="w">W</div>
-			<div class="a">A</div>
-			<div class="s">S</div>
-			<div class="d">D</div>
-		</div>
-	</main>
+		<img src="images/icons/spaceship.png" alt="8 bits spaceship" id="spaceship" height="128">
+		<img src="images/moon .png" alt="8 bits moon" id="moon">
+	</div>
+
+	<div id="game">
+		<header>
+			<div class="title">
+				<h2>Star Hunters</h2>
+				<img src="images/icons/star.png" alt="8 bits star drawing" height="64">
+			</div>
+		</header>
+
+		<main>
+			<div id="game-zone"></div>
+			<div id="spaceship-controls">
+				<div class="w">W</div>
+				<div class="a">A</div>
+				<div class="s">S</div>
+				<div class="d">D</div>
+			</div>
+		</main>
+	</div>
 </body>
 
 </html>

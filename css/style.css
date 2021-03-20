@@ -3,6 +3,10 @@ body {
   letter-spacing: 0.2em;
 }
 
+input {
+  font-family: "VT323";
+}
+
 @font-face {
   font-family: "VT323";
   src: url("../fonts/VT323-Regular.ttf");
@@ -33,6 +37,19 @@ h2 {
 
 h3 {
   font-size: 3rem;
+}
+
+input {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  outline: 0;
+  border: 0;
+}
+
+input:focus {
+  outline: inherit;
+  border: inherit;
 }
 
 .title {
@@ -158,6 +175,25 @@ h3 {
   color: #FFC32D;
   background: transparent;
   border-color: #FFC32D;
+}
+
+input {
+  margin: 1rem 0.5rem;
+  display: inline-block;
+  padding: 0.3em 1.25em;
+  font-size: 3rem;
+  text-align: center;
+  border: 2px solid #FFC32D;
+  color: #FFC32D;
+  background: #1A1A1A;
+}
+
+input:focus {
+  border: 2px solid #FFC32D;
+}
+
+input::placeholder {
+  color: #2B2B2B;
 }
 
 @font-face {

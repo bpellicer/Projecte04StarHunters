@@ -26,3 +26,16 @@ h2 {
 h3 {
 	font-size: 3rem;
 }
+
+input {
+	background: transparent;
+	padding: 0;
+	margin: 0;
+	outline: 0;
+	border: 0;
+
+	&:focus {
+		outline: inherit;
+		border: inherit;
+	}
+}
