@@ -235,8 +235,6 @@ main h2 {
 #game-zone {
   position: relative;
   margin: auto;
-  width: 80vw;
-  height: 68vh;
   border: 5px solid #2B2B2B;
 }
 
