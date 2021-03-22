@@ -4,7 +4,7 @@ function counter(){
     let ini;
     if(!ini) ini = 1;
     let increment = () => {
-        return ++ini;
+        return ini++;
     }
     return increment;
 }
@@ -16,10 +16,12 @@ class User{
         this.id = User.counter();
         this.spaceship = null;
 
-        log('User '+ this.id +' connected');
+        console.log('User '+ this.id +' connected');
     }
 
     close(){
-        log("User "+this.id+" has disconnected");
+        console.log("User "+this.id+" has disconnected");
     }
 }
+
+module.exports = User;

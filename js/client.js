@@ -13,6 +13,7 @@ function init() {
     let url = "ws://"+domain+":8180";
     connection = new WebSocket(url);    //We create a new Web Socket Connection
     
+
     
     /******* WEB SOCKET EVENTS ********/  
     
@@ -33,15 +34,16 @@ function init() {
         });
     }
     
+
     connection.onmessage = function(event) {
         let data = JSON.parse(event.data);
 
-        switch (data.action) {
+        switch (data.message) {
             case "ok": // all ok
                 WIDTH = data.width;
                 HEIGHT = data.height;
-                let spaceship = new Spaceship(NICKNAME);
-
+                console.log(NICKNAME);
+                spaceship = new Spaceship(NICKNAME);
                 break;
 
             case "duplicate":

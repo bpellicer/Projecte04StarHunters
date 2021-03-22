@@ -10,6 +10,9 @@ var http = require('http');
 var url = require('url');
 var fs = require('fs');
 
+var Star = require('./Star');
+var Spaceship = require('./Spaceship');
+var User = require('./User');
 
 const FILE_TYPES = {
 	html:"text/html",
@@ -115,7 +118,7 @@ function process(client, msg, user) {
 
 	switch (msg.action){
 		case 'newUser':
-			log('User '+ id +' creating ');
+			log('User '+ user.id+' creating ');
 			createPlayer(client, msg.nickname, user);
 			break;
 
@@ -132,24 +135,27 @@ function process(client, msg, user) {
 
 function createPlayer(client, nickname, user) {
 	// check nickname is available (not picked by another player)
+	let found = false;
 	players.forEach(player => {
 		if (player.nickname === nickname) {
 			// send to client the nickname is not available
-			client.send({'message': 'duplicate'});
+			found = true;
+			client.send(JSON.stringify({'message': 'duplicate'}));
 			return false;
 		}
 	});
 
-	// create a new player (spaceship) and add it to the list of players
+	if(found == false){
+		// create a new player (spaceship) and add it to the list of players
 	user.spaceship = new Spaceship(nickname);
-	players.push(user.spaceship);
-	
+	if(found==false)players.push(user.spaceship);
 	// send to client it can continue with the nickname and send the game zone size
 	client.send(JSON.stringify({
 		'message':"ok",
 		'width': WIDTH,
 		'height': HEIGHT
 	}));
+	}
 }
 
 function log(data) {

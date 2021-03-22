@@ -5,6 +5,7 @@ let WIDTH; // width of the game zone set by the server
 let HEIGHT; // height of the game zone set by the server
 
 let NICKNAME; // nickname from local player
+let spaceship;
 
 let stars = [];
 let endGame = false;

@@ -8,3 +8,5 @@ class Spaceship {
 		this.yPos = 0;
 	}
 }
+
+module.exports = Spaceship;

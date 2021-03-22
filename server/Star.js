@@ -33,3 +33,5 @@ class Star {
 		this.yPos = randNum(0, HEIGHT - 64);
 	}
 }
+
+module.exports = Star;
