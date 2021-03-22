@@ -1,24 +1,16 @@
 'use strict';
 
 const GAME_ZONE = $('#game-zone');
-const WIDTH = GAME_ZONE.width(); // width of the game zone
-const HEIGHT = GAME_ZONE.height(); // height of the game zone
+let WIDTH; // width of the game zone set by the server
+let HEIGHT; // height of the game zone set by the server
+
+let NICKNAME; // nickname from local player
 
 let stars = [];
 let endGame = false;
 
 let moveXAxis; // interval to move in 'x' axis
 let moveYAxis; // interval to move in 'y' axis
-
-let spaceship = new Spaceship('player-spaceship');
-
-let generateStars = setInterval(() => {
-	// check how many stars there are
-	// it only can be 10 stars in game zone
-	if (stars.length < 10) {
-		stars.push(new Star()); // add the star to the list
-	}
-}, 1000 * 1.5);
 
 /**
  * Listen for 'keydown' and 'keyup' events on document to move the spaceship

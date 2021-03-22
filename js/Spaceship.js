@@ -3,7 +3,23 @@
 class Spaceship {
 	constructor(nickname) {
 		this.nickname = nickname; // name of the player
-		this.spaceship = $(`#${nickname}`);
+
+		let path = 'images/icons/spaceship'; // root path of spaceship image
+
+		// set specific image if is the local player
+		if (NICKNAME === this.nickname) {
+			path+= '_red';
+		}
+
+		path += '.png'; // add image extension
+
+		// create the image element, set attributes and append to game zone
+		this.spaceship = $('<img>')
+			.attr('id', this.nickname)
+			.attr('alt', '8 bits spaceship')
+			.attr('src', path)
+			.addClass('spaceship')
+			.appendTo(GAME_ZONE);
 
 		this.xPos = 0;
 		this.yPos = 0;
@@ -28,7 +44,7 @@ class Spaceship {
 		}
 
 		// get the css value of width and height, remove the 'px'
-		this.width = Number(this.spaceship.css('width').replace('px',''));
+		this.width = Number(this.spaceship.css('width').replace('px', ''));
 		this.height = Number(this.spaceship.css('height').replace('px', ''));
 
 		// move the spaceship in the center of the game zone
@@ -76,16 +92,16 @@ class Spaceship {
 				topTwo = offsetTwo.top,
 				leftOne = offsetOne.left,
 				leftTwo = offsetTwo.left,
-				widthOne = objOne.width() -20,
-				widthTwo = objTwo.width() -20,
-				heightOne = objOne.height() -20,
-				heightTwo = objTwo.height() -20;
+				widthOne = objOne.width() - 20,
+				widthTwo = objTwo.width() - 20,
+				heightOne = objOne.height() - 20,
+				heightTwo = objTwo.height() - 20;
 
-			let leftTop = leftTwo > leftOne && leftTwo < leftOne+widthOne && topTwo > topOne && topTwo < topOne+heightOne,
-				rightTop = leftTwo+widthTwo > leftOne && leftTwo+widthTwo < leftOne+widthOne && topTwo > topOne && topTwo < topOne+heightOne,
-				leftBottom = leftTwo > leftOne && leftTwo < leftOne+widthOne && topTwo+heightTwo > topOne && topTwo+heightTwo < topOne+heightOne,
-				rightBottom = leftTwo+widthTwo > leftOne && leftTwo+widthTwo < leftOne+widthOne && topTwo+heightTwo > topOne && topTwo+heightTwo < topOne+heightOne;
-			
+			let leftTop = leftTwo > leftOne && leftTwo < leftOne + widthOne && topTwo > topOne && topTwo < topOne + heightOne,
+				rightTop = leftTwo + widthTwo > leftOne && leftTwo + widthTwo < leftOne + widthOne && topTwo > topOne && topTwo < topOne + heightOne,
+				leftBottom = leftTwo > leftOne && leftTwo < leftOne + widthOne && topTwo + heightTwo > topOne && topTwo + heightTwo < topOne + heightOne,
+				rightBottom = leftTwo + widthTwo > leftOne && leftTwo + widthTwo < leftOne + widthOne && topTwo + heightTwo > topOne && topTwo + heightTwo < topOne + heightOne;
+
 			return leftTop || rightTop || leftBottom || rightBottom;
 		}
 

@@ -82,7 +82,6 @@ function onRequest(peticio, resposta) {
 }
 
 var players = [];
-var pid = 0;
 
 var server = http.createServer();
 server.on('request', onRequest);
@@ -97,58 +96,62 @@ const WebSocket = require("ws");
 
 const wss = new WebSocket.Server({port: 8180});
 
-wss.on("connection", (client,petition) => {
-    client.on("close",missatge => {
-        console.log(missatge);
+wss.on("connection", (client, petition) => {
+	let user = new User(); // create a new user
+    
+	client.on("close", msg => {
+		user.close();
     });
-    client.on("message", missatge => {
-        console.log("Processant missatge");
-		process(client,missatge);
+
+    client.on("message", msg => {
+        log('Message from user' +user.id);
+		process(client, msg, user);
     })
 });
 
 
-function process(client,missatge){
-	let msg = JSON.parse(missatge);
+function process(client, msg, user) {
+	msg = JSON.parse(msg);
 
 	switch (msg.action){
-		case "newUser":
-			createPlayer(client,msg.nick);
-			
-		break;
-		case "":
+		case 'newUser':
+			log('User '+ id +' creating ');
+			createPlayer(client, msg.nickname, user);
+			break;
 
-		break;
+		case 'move':
+			// move player
+			break;
+
+		case 'impact':
+			// player impacted a star
+			break;
 	}
 }
 
 
-function createPlayer(client,nickname){
-	// switch(pid){
-	// 	case 0:
-	// 		spaceshipImage = "images/icons/spaceship_red.png";
-	// 	break;
-	// 	case 1:
-	// 		spaceshipImage = "images/icons/spaceship_green.png";
-	// 	break;
-
-	// 	case 2:
-	// 		spaceshipImage = "images/icons/spaceship_blue.png";
-	// 	break;
-
-	// 	case 3:
-	// 		spaceshipImage = "images/icons/spaceship_gold.png";
-	// 	break;
-	// }
-
+function createPlayer(client, nickname, user) {
+	// check nickname is available (not picked by another player)
 	players.forEach(player => {
-		if(player.nickname == nickname){
-			client.send({message:"duplicate"});
+		if (player.nickname === nickname) {
+			// send to client the nickname is not available
+			client.send({'message': 'duplicate'});
 			return false;
 		}
-	})
+	});
 
-	players.push(new Spaceship(nickname));
+	// create a new player (spaceship) and add it to the list of players
+	user.spaceship = new Spaceship(nickname);
+	players.push(user.spaceship);
 	
-	client.send(JSON.stringify({message:"ok",width:WIDTH, height:HEIGHT}));
+	// send to client it can continue with the nickname and send the game zone size
+	client.send(JSON.stringify({
+		'message':"ok",
+		'width': WIDTH,
+		'height': HEIGHT
+	}));
+}
+
+function log(data) {
+	console.log(`[${new Date().toLocaleString()}] ${data}`);
 }

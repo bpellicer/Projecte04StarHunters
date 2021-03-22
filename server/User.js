@@ -15,6 +15,8 @@ class User{
     constructor(){
         this.id = User.counter();
         this.spaceship = null;
+
+        log('User '+ this.id +' connected');
     }
 
     close(){

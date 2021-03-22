@@ -1,35 +1,14 @@
 'use strict';
 
-/**
- *  * Generate a random number between 'min' and 'max' both included
- *  * @param {Number} min 
- *  * @param {Number} max 
- *  */
-let randNum = (min, max) => {
-	return Math.random() * (max - min) + min;
-}
-
-function counter() {
-	let ini;
-	if (!ini) ini = 1;
-	let increment = () => {
-		return ++ini;
-	}
-	return increment;
-}
-
 class Star {
-	static counter = counter();
+	constructor(id, x, y) {
+		this.id = id;
 
-	constructor() {
-		this.id = Star.counter();
+		this.xPos = x;
+		this.yPos = y;
 
 		this.width = 64;
 		this.height = 64;
-
-		// generate x and y random axis
-		this.xPos = randNum(0, WIDTH - this.width);
-		this.yPos = randNum(0, HEIGHT - this.height);
 
 		this.coordinates = {
 			'topLeft': {
