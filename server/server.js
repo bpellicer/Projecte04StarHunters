@@ -1,10 +1,15 @@
 /*************************************************
 *                  WEB SERVER                    *
 *************************************************/
+"use strict";
+
+const WIDTH = 1500;
+const HEIGHT = 660;
 
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
+
 
 const FILE_TYPES = {
 	html:"text/html",
@@ -76,6 +81,9 @@ function onRequest(peticio, resposta) {
 	});
 }
 
+var players = [];
+var pid = 0;
+
 var server = http.createServer();
 server.on('request', onRequest);
 server.listen(8080);
@@ -104,12 +112,43 @@ function process(client,missatge){
 	let msg = JSON.parse(missatge);
 
 	switch (msg.action){
-		case "addPlayer":
-			console.log("JUGADOR AFEGIT!");
+		case "newUser":
+			createPlayer(client,msg.nick);
+			
 		break;
 		case "":
 
 		break;
 	}
+}
 
+
+function createPlayer(client,nickname){
+	// switch(pid){
+	// 	case 0:
+	// 		spaceshipImage = "images/icons/spaceship_red.png";
+	// 	break;
+	// 	case 1:
+	// 		spaceshipImage = "images/icons/spaceship_green.png";
+	// 	break;
+
+	// 	case 2:
+	// 		spaceshipImage = "images/icons/spaceship_blue.png";
+	// 	break;
+
+	// 	case 3:
+	// 		spaceshipImage = "images/icons/spaceship_gold.png";
+	// 	break;
+	// }
+
+	players.forEach(player => {
+		if(player.nickname == nickname){
+			client.send({message:"duplicate"});
+			return false;
+		}
+	})
+
+	players.push(new Spaceship(nickname));
+	
+	client.send(JSON.stringify({message:"ok",width:WIDTH, height:HEIGHT}));
 }
