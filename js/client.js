@@ -42,12 +42,12 @@ function init() {
             case "ok": // all ok
                 WIDTH = data.width;
                 HEIGHT = data.height;
-
+                DIV_FORM.hide();
+                GAME.show();
                 GAME_ZONE.css({
                     'width': WIDTH,
                     'height': HEIGHT
                 });
-
                 spaceship = new Spaceship(NICKNAME);
                 break;
 

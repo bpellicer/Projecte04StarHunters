@@ -3,8 +3,8 @@
 *************************************************/
 "use strict";
 
-const WIDTH = 1500;
-const HEIGHT = 660;
+const WIDTH = 1400;
+const HEIGHT = 470;
 
 var http = require('http');
 var url = require('url');

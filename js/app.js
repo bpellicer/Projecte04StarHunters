@@ -1,6 +1,8 @@
 'use strict';
 
 const GAME_ZONE = $('#game-zone');
+const GAME = $("#game");
+const DIV_FORM = $("#nickname-form");
 let WIDTH; // width of the game zone set by the server
 let HEIGHT; // height of the game zone set by the server
 
@@ -72,6 +74,7 @@ function keyEvents() {
 }
 
 function init() {
+	GAME.hide();
 	keyEvents();
 }
 
