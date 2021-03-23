@@ -105,19 +105,12 @@ wss.on("connection", (client, petition) => {
 	let user = new User(); // create a new user
 
 	client.on("close", msg => {
-		user.close();
-		let player_disconnected = JSON.stringify({
+		user.close(players);
+
+		broadcast(client, JSON.stringify({
 			'msg':'player_disconnected',
 			'user': user
-		});
-
-		players.forEach((element,index) => {
-			if(element.nickname == user.nickname){
-				players.splice(index,1);
-			}
-		});
-
-		broadcast(client,player_disconnected);
+		}));
 	});
 
 	client.on("message", msg => {
@@ -195,3 +188,5 @@ function broadcast(client,message){
 		}
 	});
 }
+
+module.exports = {broadcast};

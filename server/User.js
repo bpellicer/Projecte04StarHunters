@@ -23,9 +23,15 @@ class User {
         lib.log(`New user connected. ID: ${this.id}`);
     }
 
-    close() {
+    close(players) {
         lib.log(`User ${this.id} disconnected.`);
+
         // remove user from players list
+		players.forEach((player,index) => {
+			if (player.nickname === this.nickname) {
+				players.splice(index,1);
+			}
+		});
     }
 }
 
