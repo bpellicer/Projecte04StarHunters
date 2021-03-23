@@ -10,7 +10,7 @@ let NICKNAME; // nickname from local player
 let spaceship;
 
 let stars = [];
-let players = [];
+let spaceships = [];
 let endGame = false;
 
 let moveXAxis; // interval to move in 'x' axis
@@ -74,18 +74,39 @@ function moveKeys() {
 	});
 }
 
-function addPlayers() {
-	// delete all spaceships on the game zone unless local player
-	$('#game-zone .spaceship').each((index, element) => {
-		if ($(element).attr('id') === NICKNAME) return;
-		element.remove();
-	});
-
-	// for each player, create a new spaceship
+function addPlayers(players) {
+	// for each player create a new spaceship if was not created before
 	players.forEach(player => {
 		// prevent creating a second spaceship for the local player
 		if (player.nickname === NICKNAME) return;
-		new Spaceship(player.nickname);
+
+		let found = false;
+		spaceships.forEach(spaceship => {
+			if (spaceship.nickname === player.nickname) {
+				found = true;
+				return;
+			}
+		})
+
+		if (!found) {
+			spaceships.push(new Spaceship(player.nickname));
+		}
+	});
+
+	console.log(spaceships);
+}
+
+/**
+ * Remove a spaceship from the game zone and from the spaceships list
+ * @param {Object} user 
+ */
+function removePlayer(user) {
+	spaceships.forEach((spaceship, pos) => {
+		if (spaceship.nickname === user.nickname) {
+			spaceship.spaceship.remove();
+			spaceships.splice(pos, 1);
+			return;
+		}
 	});
 }
 

@@ -37,7 +37,7 @@ function init() {
 
     connection.onmessage = function(event) {
         let data = JSON.parse(event.data); // cast data to json
-        
+
         switch (data.msg) {
             case 'ok':
                 // set game zone width and height
@@ -56,8 +56,11 @@ function init() {
                 break;
             
             case 'add_players':
-                players = data.players; // overwrite the list of players
-                addPlayers();
+                addPlayers(data.players);
+                break;
+            
+            case 'player_disconnected':
+                removePlayer(data.user);
                 break;
 
             case 'duplicate_nickname':
