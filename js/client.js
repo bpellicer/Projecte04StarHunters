@@ -37,7 +37,7 @@ function init() {
 
     connection.onmessage = function(event) {
         let data = JSON.parse(event.data); // cast data to json
-
+        
         switch (data.msg) {
             case 'ok':
                 // set game zone width and height

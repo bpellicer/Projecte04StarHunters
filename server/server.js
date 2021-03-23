@@ -165,8 +165,21 @@ function createPlayer(client, nickname, user) {
 		'config': CONFIG,
 	}));
 
-	broadcast(client, JSON.stringify({
+	let players_msg = JSON.stringify({
 		'msg': 'add_players',
 		'players': players,
-	}));
+	});
+
+	client.send(players_msg);
+
+	broadcast(client, players_msg);
+}
+
+
+function broadcast(client,message){
+	wss.clients.forEach(function each(cli) {
+		if (cli !== client && cli.readyState === WebSocket.OPEN) {
+		  cli.send(message);
+		}
+	});
 }
