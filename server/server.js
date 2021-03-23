@@ -121,6 +121,7 @@ function process(client, msg, user) {
 		case 'register_nickname':
 			lib.log('Registering a nickname.');
 			createPlayer(client, msg.nickname, user);
+			broadcast(client,msg);
 			break;
 
 		case 'move':
@@ -158,4 +159,13 @@ function createPlayer(client, nickname, user) {
 		'msg': 'ok',
 		'config': CONFIG,
 	}));
+}
+
+
+function broadcast(client,message){
+	wss.clients.forEach(function each(cli) {
+		if (cli !== client && cli.readyState === WebSocket.OPEN) {
+		  cli.send(JSON.stringify(message));
+		}
+	});
 }
