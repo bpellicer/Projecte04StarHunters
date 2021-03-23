@@ -130,6 +130,12 @@ function process(client, msg, user) {
 		case 'impact':
 			// player impacted a star
 			break;
+		
+		case 'start_game':
+			broadcast(client, JSON.stringify({
+				'msg': 'start_game'
+			}));
+			break;
 	}
 }
 
@@ -157,5 +163,10 @@ function createPlayer(client, nickname, user) {
 	client.send(JSON.stringify({
 		'msg': 'ok',
 		'config': CONFIG,
+	}));
+
+	broadcast(client, JSON.stringify({
+		'msg': 'add_players',
+		'players': players,
 	}));
 }

@@ -54,9 +54,23 @@ function init() {
                 DIV_FORM.hide();
                 GAME.show();
                 break;
+            
+            case 'add_players':
+                players = data.players; // overwrite the list of players
+                addPlayers();
+                break;
 
             case 'duplicate_nickname':
                 alert("THE NICKNAME IS ALREADY IN USE");
+                break;
+            
+            case 'start_game':
+                moveKeys();
+                break;
+            
+            case 'end_game':
+                // stop listening for keydown and keyup events on document
+                $(document).off('keydown keyup');
                 break;
         }   
     }

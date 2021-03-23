@@ -10,6 +10,7 @@ let NICKNAME; // nickname from local player
 let spaceship;
 
 let stars = [];
+let players = [];
 let endGame = false;
 
 let moveXAxis; // interval to move in 'x' axis
@@ -18,7 +19,7 @@ let moveYAxis; // interval to move in 'y' axis
 /**
  * Listen for 'keydown' and 'keyup' events on document to move the spaceship
  */
-function keyEvents() {
+function moveKeys() {
 	$(document).on('keydown keyup', e => {
 		const LEFT_KEY = e.key === 'a' || e.code === 'KeyA' || e.keyCode === 65;
 		const RIGHT_KEY = e.key === 'd' || e.code === 'KeyD' || e.keyCode === 68;
@@ -73,9 +74,23 @@ function keyEvents() {
 	});
 }
 
+function addPlayers() {
+	// delete all spaceships on the game zone unless local player
+	$('#game-zone .spaceship').each((index, element) => {
+		if ($(element).attr('id') === NICKNAME) return;
+		element.remove();
+	});
+
+	// for each player, create a new spaceship
+	players.forEach(player => {
+		// prevent creating a second spaceship for the local player
+		if (player.nickname === NICKNAME) return;
+		new Spaceship(player.nickname);
+	});
+}
+
 function init() {
 	GAME.hide();
-	keyEvents();
 }
 
 $(document).ready(function () {
