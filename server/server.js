@@ -106,6 +106,18 @@ wss.on("connection", (client, petition) => {
 
 	client.on("close", msg => {
 		user.close();
+		let player_disconnected = JSON.stringify({
+			'msg':'player_disconnected',
+			'user': user
+		});
+
+		players.forEach((element,index) => {
+			if(element.nickname == user.nickname){
+				players.splice(index,1);
+			}
+		});
+
+		broadcast(client,player_disconnected);
 	});
 
 	client.on("message", msg => {
