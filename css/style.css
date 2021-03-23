@@ -232,6 +232,10 @@ main h2 {
   margin-bottom: 4rem;
 }
 
+#duplicate_nickname {
+  visibility: hidden;
+}
+
 #game-zone {
   position: relative;
   margin: auto;

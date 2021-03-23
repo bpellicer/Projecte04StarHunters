@@ -1,7 +1,6 @@
 "use strict";
 
 let connection; // Web Socket connection
-
 function init() {
     let domain;     // Domain url
 
@@ -37,7 +36,6 @@ function init() {
 
     connection.onmessage = function(event) {
         let data = JSON.parse(event.data); // cast data to json
-
         switch (data.msg) {
             case 'ok':
                 // set game zone width and height
@@ -64,7 +62,7 @@ function init() {
                 break;
 
             case 'duplicate_nickname':
-                alert("THE NICKNAME IS ALREADY IN USE");
+                $("#duplicate_nickname").css("visibility","visible");
                 break;
             
             case 'start_game':
