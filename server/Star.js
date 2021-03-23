@@ -24,6 +24,9 @@ function counter() {
 
 class Star {
 	static counter = counter();
+	id;
+	xPos;
+	yPos;
 
 	constructor() {
 		this.id = Star.counter();

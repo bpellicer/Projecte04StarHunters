@@ -1,6 +1,14 @@
 'use strict';
 
 class Spaceship {
+	nickname;
+	spaceship;
+	xPos;
+	yPos;
+	coordinates;
+	width;
+	height;
+
 	constructor(nickname) {
 		this.nickname = nickname; // name of the player
 

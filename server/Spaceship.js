@@ -1,9 +1,10 @@
 'use strict';
 
 class Spaceship {
-	constructor(nickname) {
-		this.nickname = nickname; // name of the player
-
+	xPos;
+	yPos;
+	
+	constructor() {
 		this.xPos = 0;
 		this.yPos = 0;
 	}

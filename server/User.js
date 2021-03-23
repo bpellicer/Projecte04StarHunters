@@ -1,6 +1,8 @@
 'use strict';
 
-function counter(){
+const lib = require('./lib');
+
+function counter() {
     let ini;
     if(!ini) ini = 1;
     let increment = () => {
@@ -9,18 +11,21 @@ function counter(){
     return increment;
 }
 
-class User{
+class User {
     static counter = counter();
+    id;
+    nickname;
+    spaceship;
 
-    constructor(){
+    constructor() {
         this.id = User.counter();
-        this.spaceship = null;
 
-        console.log('User '+ this.id +' connected');
+        lib.log(`New user connected. ID: ${this.id}`);
     }
 
-    close(){
-        console.log("User "+this.id+" has disconnected");
+    close() {
+        lib.log(`User ${this.id} disconnected.`);
+        // remove user from players list
     }
 }
 

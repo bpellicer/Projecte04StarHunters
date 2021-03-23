@@ -27,7 +27,7 @@ function init() {
             // check nickname is not empty
             if (NICKNAME != "") {
                 connection.send(JSON.stringify({
-                    'action': 'newUser',
+                    'action': 'register_nickname',
                     'nickname': NICKNAME
                 }));
             }
@@ -36,24 +36,28 @@ function init() {
     
 
     connection.onmessage = function(event) {
-        let data = JSON.parse(event.data);
+        let data = JSON.parse(event.data); // cast data to json
 
-        switch (data.message) {
-            case "ok": // all ok
-                WIDTH = data.width;
-                HEIGHT = data.height;
-                DIV_FORM.hide();
-                GAME.show();
+        switch (data.msg) {
+            case 'ok':
+                // set game zone width and height
+                WIDTH = data.config.width;
+                HEIGHT = data.config.height;
                 GAME_ZONE.css({
                     'width': WIDTH,
                     'height': HEIGHT
                 });
+
+                // create the user spaceship
                 spaceship = new Spaceship(NICKNAME);
+
+                DIV_FORM.hide();
+                GAME.show();
                 break;
 
-            case "duplicate":
+            case 'duplicate_nickname':
                 alert("THE NICKNAME IS ALREADY IN USE");
-            break;
+                break;
         }   
     }
 

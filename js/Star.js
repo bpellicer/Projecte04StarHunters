@@ -1,6 +1,14 @@
 'use strict';
 
 class Star {
+	id;
+	star;
+	xPos;
+	yPos;
+	coordinates;
+	width;
+	height;
+
 	constructor(id, x, y) {
 		this.id = id;
 

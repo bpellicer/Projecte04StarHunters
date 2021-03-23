@@ -3,27 +3,31 @@
 *************************************************/
 "use strict";
 
-const WIDTH = 1400;
-const HEIGHT = 470;
+const CONFIG = {
+	'width': 1400,
+	'height': 470,
+}
+let players = [];
 
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
 
-var Star = require('./Star');
-var Spaceship = require('./Spaceship');
-var User = require('./User');
+const Star = require('./Star');
+const Spaceship = require('./Spaceship');
+const User = require('./User');
+const lib = require('./lib');
 
 const FILE_TYPES = {
-	html:"text/html",
-	css:"text/css",
-	js:"text/js",
-	svg:"image/svg+xml",
-	png:"image/png",
-	gif:"image/gif",
-	ico:"image/ico",
-	jpg:"image/jpg",
-	jpeg:"image/jpg",
+	html: "text/html",
+	css: "text/css",
+	js: "text/js",
+	svg: "image/svg+xml",
+	png: "image/png",
+	gif: "image/gif",
+	ico: "image/ico",
+	jpg: "image/jpg",
+	jpeg: "image/jpg",
 };
 
 // Obté el tipus de contingut a partir de l'extensió de l'arxiu
@@ -37,31 +41,31 @@ function contentType(filename) {
 // Envia l'arxiu o respon amb un error si no el troba o no el pot llegir
 function enviarArxiu(err, dades, resposta, cType) {
 	if (err) {
-		resposta.writeHead(404, {'Content-Type': 'text/html'});
+		resposta.writeHead(404, { 'Content-Type': 'text/html' });
 		resposta.end("404 Not Found");
 		return;
 	}
 
-	resposta.writeHead(200, {'Content-Type': cType});
+	resposta.writeHead(200, { 'Content-Type': cType });
 	resposta.end(dades);
 }
 
 function header(resposta, codi, cType) {
 	resposta.setHeader('Access-Control-Allow-Origin', '*');
 	resposta.setHeader('Access-Control-Allow-Methods', 'GET');
-	if (cType) resposta.writeHead(codi, {'Content-Type': cType});
+	if (cType) resposta.writeHead(codi, { 'Content-Type': cType });
 	else resposta.writeHead(codi);
 }
 
 function onRequest(peticio, resposta) {
 	var cosPeticio = "";
 
-	peticio.on('error', function(err) {
+	peticio.on('error', function (err) {
 		console.error(err);
-	}).on('data', function(dades) {
+	}).on('data', function (dades) {
 		cosPeticio += dades;
-	}).on('end', function() {
-		resposta.on('error', function(err) {
+	}).on('end', function () {
+		resposta.on('error', function (err) {
 			console.error(err);
 		});
 
@@ -70,21 +74,19 @@ function onRequest(peticio, resposta) {
 			//	?p1=hola --> { p1: 'hola' }
 			// Sense true retorna l'string: "?p1=hola"
 			dades = url.parse(peticio.url, true);
-			
+
 			var filename = "." + dades.pathname;
 			if (filename == "./") filename += "index.html";
-			
+
 			var cType = contentType(filename);
-			if (cType) fs.readFile(filename, function(err, data) { enviarArxiu(err, data, resposta, cType); });
+			if (cType) fs.readFile(filename, function (err, data) { enviarArxiu(err, data, resposta, cType); });
 			else {
-				resposta.writeHead(400, {'Content-Type': 'text/html'});
+				resposta.writeHead(400, { 'Content-Type': 'text/html' });
 				resposta.end("Tipus d'arxiu desconegut.");
 			}
 		}
 	});
 }
-
-var players = [];
 
 var server = http.createServer();
 server.on('request', onRequest);
@@ -97,28 +99,27 @@ server.listen(8080);
 
 const WebSocket = require("ws");
 
-const wss = new WebSocket.Server({port: 8180});
+const wss = new WebSocket.Server({ port: 8180 });
 
 wss.on("connection", (client, petition) => {
 	let user = new User(); // create a new user
-    
+
 	client.on("close", msg => {
 		user.close();
-    });
+	});
 
-    client.on("message", msg => {
-        log('Message from user' +user.id);
+	client.on("message", msg => {
 		process(client, msg, user);
-    })
+	})
 });
 
 
 function process(client, msg, user) {
 	msg = JSON.parse(msg);
 
-	switch (msg.action){
-		case 'newUser':
-			log('User '+ user.id+' creating ');
+	switch (msg.action) {
+		case 'register_nickname':
+			lib.log('Registering a nickname.');
 			createPlayer(client, msg.nickname, user);
 			break;
 
@@ -134,30 +135,27 @@ function process(client, msg, user) {
 
 
 function createPlayer(client, nickname, user) {
-	// check nickname is available (not picked by another player)
 	let found = false;
+	// check nickname is available (not picked by another player)
 	players.forEach(player => {
 		if (player.nickname === nickname) {
 			// send to client the nickname is not available
+			client.send(JSON.stringify({'msg': 'duplicate_nickname' }));
 			found = true;
-			client.send(JSON.stringify({'message': 'duplicate'}));
-			return false;
+			return;
 		}
 	});
+	if (found) return;
 
-	if(found == false){
-		// create a new player (spaceship) and add it to the list of players
-	user.spaceship = new Spaceship(nickname);
-	if(found==false)players.push(user.spaceship);
+	// set the nickname
+	user.nickname = nickname;
+	// create the spaceship for the user
+	user.spaceship = new Spaceship();
+	// add the user to the list of players
+	players.push(user);
 	// send to client it can continue with the nickname and send the game zone size
 	client.send(JSON.stringify({
-		'message':"ok",
-		'width': WIDTH,
-		'height': HEIGHT
+		'msg': 'ok',
+		'config': CONFIG,
 	}));
-	}
-}
-
-function log(data) {
-	console.log(`[${new Date().toLocaleString()}] ${data}`);
 }
