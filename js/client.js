@@ -9,9 +9,7 @@ function init() {
     /******* WEB SOCKET EVENTS ********/  
     
     connection.onopen = function(event) {
-        connection.send(JSON.stringify({
-            'msg': 'play_game'
-        }));
+       
 
         // listen for nickname form submit
         $('#nickname-form').on('submit', function(event) {
@@ -27,6 +25,9 @@ function init() {
                 }));
             }
         });
+        connection.send(JSON.stringify({
+            'action': 'play_game'
+        }));
     }
     
 

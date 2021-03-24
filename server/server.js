@@ -134,6 +134,7 @@ function process(client, msg, user) {
 				}));
 			} else {
 				activeAdmin = true;
+				lib.log('Admin connected');
 			}
 			break;
 

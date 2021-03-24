@@ -1,6 +1,7 @@
 'use strict';
 
 let connection; // Web Socket connection
+let players = [];
 
 function init() {
 	let domain = window.location.protocol === 'file:' ? 'localhost' : window.location.hostname;
@@ -8,8 +9,8 @@ function init() {
 
 	connection.onopen = function (event) {
 		connection.send(JSON.stringify({
-			'msg': 'host_game',
-		}))
+			'action': 'host_game',
+		}));
 	}
 
 	connection.onmessage = function (event) {
@@ -21,6 +22,7 @@ function init() {
 				break;
 
 			case 'add_players':
+				addPlayers(data.players);
 				break;
 		}
 	}
@@ -34,8 +36,32 @@ function init() {
 	}
 }
 
+
+function addPlayers(users){
+	// for each player create a new spaceship if was not created before
+	users.forEach(user => {
+		
+		let found = false;
+		players.forEach(player => {
+			if (player.nickname === user.nickname) {
+				found = true;
+				return;
+			}
+		});
+		if (!found) {
+			players.push(user);
+			$("#list").append("<div><img src ='../images/icons/spaceship.png'><p>"+user.nickname+"</p></div>");
+		}
+	});
+	
+}
+
 function startGame() {
 	connection.send(JSON.stringify({
 
 	}))
 }
+
+$(document).ready(function () {
+	init();
+});
