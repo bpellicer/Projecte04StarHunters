@@ -16,6 +16,7 @@ class User {
     id;
     nickname;
     spaceship;
+    isAdmin = false;
 
     constructor() {
         this.id = User.counter();

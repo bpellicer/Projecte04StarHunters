@@ -1,9 +1,28 @@
 'use strict';
 
+const START_BTN = $('#start-btn');
+const END_BTN = $('#end-btn');
+
 let connection; // Web Socket connection
 let players = [];
 
 function init() {
+	$(END_BTN).hide();
+
+	$(START_BTN).click(event => {
+		startGame();
+		// hide the start button and show the end button
+		$(START_BTN).hide();
+		$(END_BTN).show();
+	});
+
+	$(END_BTN).click(event => {
+		endGame();
+		// hide the end button and show the start button
+		$(END_BTN).hide();
+		$(START_BTN).show();
+	});
+
 	let domain = window.location.protocol === 'file:' ? 'localhost' : window.location.hostname;
 	connection = new WebSocket(`ws://${domain}:8180`);
 
@@ -19,6 +38,7 @@ function init() {
 		switch (data.msg) {
 			case 'active_host':
 				// go back to index.html
+				window.location.replace("index.html");
 				break;
 
 			case 'add_players':
@@ -28,11 +48,11 @@ function init() {
 	}
 
 	connection.onclose = function (event) {
-
+		//
 	}
 
-	connection.onclose = function (event) {
-
+	connection.onerror = function (event) {
+		//
 	}
 }
 
@@ -63,8 +83,14 @@ function addPlayers(users){
 
 function startGame() {
 	connection.send(JSON.stringify({
+		'action': 'start_game'
+	}));
+}
 
-	}))
+function endGame() {
+	connection.send(JSON.stringify({
+		'action': 'end_game'
+	}));
 }
 
 $(document).ready(function () {

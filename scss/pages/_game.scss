@@ -23,6 +23,24 @@
 	}
 }
 
+#pregame-message{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	z-index: 20;
+	transition: transform 500ms ease;
+	animation-name: scale;
+	animation-duration: 2s;
+	animation-direction: alternate;
+	animation-iteration-count: infinite;
+}
+@keyframes scale{
+	0%{font-size: 50px;}
+	100%{font-size: 80px;}
+}
+
+
 #spaceship-controls {
 	margin: 1.5rem auto;
 	width: fit-content;

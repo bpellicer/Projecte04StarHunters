@@ -109,12 +109,16 @@ wss.on("connection", (client, petition) => {
 	let user = new User(); // create a new user
 
 	client.on("close", msg => {
-		user.close(players);
-
-		broadcast(client, JSON.stringify({
-			'msg':'player_disconnected',
-			'user': user
-		}));
+		if (user.isAdmin) {
+			endGame();
+		} else {	
+			user.close(players);
+			
+			broadcast(client, JSON.stringify({
+				'msg': 'player_disconnected',
+				'user': user
+			}));
+		}
 	});
 
 	client.on("message", msg => {
@@ -133,8 +137,9 @@ function process(client, msg, user) {
 					'msg': 'active_host'
 				}));
 			} else {
-				activeAdmin = true;
 				lib.log('Admin connected');
+				activeAdmin = true;
+				user.isAdmin = true;
 			}
 			break;
 
@@ -158,21 +163,13 @@ function process(client, msg, user) {
 		case 'impact':
 			// player impacted a star
 			break;
-		
-		case 'start_game':
-			gameStarted = true;
-			
-			// start generating stars
-			generateStars();
 
-			// send to all players that the game starts
-			broadcast(null, JSON.stringify({
-				'msg': 'start_game'
-			}));
+		case 'start_game':
+			startGame();
 			break;
-		
+
 		case 'end_game':
-			clearInterval(starsGenerator);
+			endGame();
 			break;
 	}
 }
@@ -192,7 +189,7 @@ function createPlayer(client, nickname, user) {
 	players.forEach(player => {
 		if (player.nickname === nickname) {
 			// send to client the nickname is not available
-			client.send(JSON.stringify({'msg': 'duplicate_nickname' }));
+			client.send(JSON.stringify({ 'msg': 'duplicate_nickname' }));
 			found = true;
 			return;
 		}
@@ -243,10 +240,31 @@ function generateStars() {
 	}, 1500);
 }
 
-function broadcast(client,message){
+function startGame() {
+	lib.log('Game has started.');
+	gameStarted = true;
+	generateStars(); // start generating stars
+	// send to all players that the game starts
+	broadcast(null, JSON.stringify({
+		'msg': 'start_game'
+	}));
+}
+
+function endGame() {
+	lib.log('Game has ended.');
+	gameStarted = false;
+	activeAdmin = false;
+	clearInterval(starsGenerator); // stop generating stars
+	// send to all players that the game has ended
+	broadcast(null, JSON.stringify({
+		'msg': 'end_game'
+	}));
+}
+
+function broadcast(client, message) {
 	wss.clients.forEach(function each(cli) {
 		if (cli !== client && cli.readyState === WebSocket.OPEN) {
-		  cli.send(message);
+			cli.send(message);
 		}
 	});
 }

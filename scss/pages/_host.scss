@@ -1,6 +1,6 @@
 @use '../abstracts' as *;
 
-main {
+.admin-zone{
 	height: 100vh;
 	text-align: center;
 }
@@ -29,8 +29,4 @@ main {
 #start-btn,
 #end-btn {
 	margin-top: 3rem;
-}
-
-#end-btn {
-	display: none;
 }

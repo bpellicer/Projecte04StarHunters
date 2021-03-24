@@ -37,6 +37,7 @@ function init() {
         switch (data.msg) {
             case 'no_host_active':
                 // go back to index.html
+                window.location.replace("index.html");
                 break;
 
             case 'ok':
@@ -72,6 +73,7 @@ function init() {
                 break;
             
             case 'start_game':
+                $('#pregame-message').hide();
                 moveKeys();
                 break;
             
