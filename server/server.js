@@ -11,6 +11,7 @@ let players = [];
 let stars = [];
 let starsGenerator; // interval to generate stars
 let gameStarted = false; // to check if the game started
+let activeAdmin = false; // to check when there is someone hosting the game
 
 var http = require('http');
 var url = require('url');
@@ -126,6 +127,24 @@ function process(client, msg, user) {
 	msg = JSON.parse(msg);
 
 	switch (msg.action) {
+		case 'host_game':
+			if (activeAdmin) {
+				client.send(JSON.stringify({
+					'msg': 'active_host'
+				}));
+			} else {
+				activeAdmin = true;
+			}
+			break;
+
+		case 'play_game':
+			if (!activeAdmin || gameStarted) {
+				client.send(JSON.stringify({
+					'msg': 'no_host_active'
+				}));
+			}
+			break;
+
 		case 'register_nickname':
 			lib.log('Registering a nickname.');
 			createPlayer(client, msg.nickname, user);

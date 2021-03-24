@@ -1,22 +1,18 @@
 "use strict";
 
 let connection; // Web Socket connection
+
 function init() {
-    let domain;     // Domain url
-
-    if (window.location.protocol == "file:"){
-        domain = "localhost";
-    } else {
-        domain = window.location.hostname;
-    }
-    let url = "ws://"+domain+":8180";
-    connection = new WebSocket(url);    //We create a new Web Socket Connection
-    
-
+    let domain = window.location.protocol === 'file:' ? 'localhost' : window.location.hostname;
+	connection = new WebSocket(`ws://${domain}:8180`);    
     
     /******* WEB SOCKET EVENTS ********/  
     
     connection.onopen = function(event) {
+        connection.send(JSON.stringify({
+            'msg': 'play_game'
+        }));
+
         // listen for nickname form submit
         $('#nickname-form').on('submit', function(event) {
             event.preventDefault();
@@ -36,7 +32,12 @@ function init() {
 
     connection.onmessage = function(event) {
         let data = JSON.parse(event.data); // cast data to json
+
         switch (data.msg) {
+            case 'no_host_active':
+                // go back to index.html
+                break;
+
             case 'ok':
                 // set game zone width and height
                 WIDTH = data.config.width;
