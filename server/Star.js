@@ -1,5 +1,7 @@
 'use strict';
 
+let server = require('./server');
+
 /**
  * Generate a random number between 'min' and 'max' both included
  * @param {Number} min 
@@ -17,7 +19,7 @@ function counter() {
 	let ini;
 	if (!ini) ini = 1;
 	let increment = () => {
-		return ++ini;
+		return ini++;
 	}
 	return increment;
 }
@@ -32,8 +34,8 @@ class Star {
 		this.id = Star.counter();
 
 		// generate x and y random axis
-		this.xPos = randNum(0, WIDTH - 64);
-		this.yPos = randNum(0, HEIGHT - 64);
+		this.xPos = randNum(0, server.config.width - 64);
+		this.yPos = randNum(0, server.config.height - 64);
 	}
 }
 

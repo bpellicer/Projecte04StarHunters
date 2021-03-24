@@ -7,7 +7,7 @@ let WIDTH; // width of the game zone set by the server
 let HEIGHT; // height of the game zone set by the server
 
 let NICKNAME; // nickname from local player
-let spaceship;
+let spaceship; // spaceship from the local player
 
 let stars = [];
 let spaceships = [];
@@ -92,13 +92,11 @@ function addPlayers(players) {
 			spaceships.push(new Spaceship(player.nickname));
 		}
 	});
-
-	console.log(spaceships);
 }
 
 /**
  * Remove a spaceship from the game zone and from the spaceships list
- * @param {Object} user 
+ * @param {User} user User class from server
  */
 function removePlayer(user) {
 	spaceships.forEach((spaceship, pos) => {
@@ -108,6 +106,15 @@ function removePlayer(user) {
 			return;
 		}
 	});
+}
+
+/**
+ * Generate a new star and add it to the list of stars
+ * @param {Star} star Star class from server
+ */
+function addStar(star) {
+	// generate the new star and add it to the list of stars
+	stars.push(new Star(star.id, star.xPos, star.yPos));
 }
 
 function init() {

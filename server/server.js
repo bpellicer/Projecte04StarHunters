@@ -8,6 +8,9 @@ const CONFIG = {
 	'height': 470,
 }
 let players = [];
+let stars = [];
+let starsGenerator; // interval to generate stars
+let gameStarted = false; // to check if the game started
 
 var http = require('http');
 var url = require('url');
@@ -115,7 +118,7 @@ wss.on("connection", (client, petition) => {
 
 	client.on("message", msg => {
 		process(client, msg, user);
-	})
+	});
 });
 
 
@@ -137,14 +140,32 @@ function process(client, msg, user) {
 			break;
 		
 		case 'start_game':
-			broadcast(client, JSON.stringify({
+			gameStarted = true;
+			
+			// start generating stars
+			generateStars();
+
+			// send to all players that the game starts
+			broadcast(null, JSON.stringify({
 				'msg': 'start_game'
 			}));
+			break;
+		
+		case 'end_game':
+			clearInterval(starsGenerator);
 			break;
 	}
 }
 
-
+/**
+ * Generate the spaceship for the user
+ * Check if the nickname is available
+ * If the nickname is already in use, send to the client the error
+ * If the spaceship was generated successfully send to all players the list of players
+ * @param {Object} client WebSocket client
+ * @param {String} nickname 
+ * @param {User} user 
+ */
 function createPlayer(client, nickname, user) {
 	let found = false;
 	// check nickname is available (not picked by another player)
@@ -175,11 +196,32 @@ function createPlayer(client, nickname, user) {
 		'players': players,
 	});
 
+	// send to the new player the list of all players
 	client.send(players_msg);
 
+	// send to all players the updated list of players
 	broadcast(client, players_msg);
 }
 
+/**
+ * Generate stars (max of 10 stars) every 1.5 seconds
+ * add them to the list and then send the new star to all the players.
+ */
+function generateStars() {
+	starsGenerator = setInterval(() => {
+		if (stars.length < 10) {
+			// generate a new star and add it to the list
+			let star = new Star();
+			stars.push(star);
+
+			// send to every player the new star
+			broadcast(null, JSON.stringify({
+				'msg': 'add_star',
+				'star': star,
+			}));
+		}
+	}, 1500);
+}
 
 function broadcast(client,message){
 	wss.clients.forEach(function each(cli) {
@@ -189,4 +231,4 @@ function broadcast(client,message){
 	});
 }
 
-module.exports = {broadcast};
+module.exports.config = CONFIG;

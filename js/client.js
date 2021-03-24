@@ -57,6 +57,10 @@ function init() {
                 addPlayers(data.players);
                 break;
             
+            case 'add_star':
+                addStar(data.star);
+                break;
+            
             case 'player_disconnected':
                 removePlayer(data.user);
                 break;
