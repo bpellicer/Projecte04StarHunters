@@ -19,6 +19,7 @@ function init() {
 		switch (data.msg) {
 			case 'active_host':
 				// go back to index.html
+				window.location.replace("index.html");
 				break;
 
 			case 'add_players':
