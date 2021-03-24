@@ -287,4 +287,39 @@ main h2 {
   transform: scale(0.9) !important;
 }
 
+main {
+  height: 100vh;
+  text-align: center;
+}
+
+.title {
+  margin-top: 15vh;
+  margin-bottom: 4rem;
+}
+
+#players-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 2rem;
+  grid-row-gap: 1.5rem;
+  width: 80%;
+  margin: auto;
+}
+
+#players-list .player {
+  padding: 0.3em 0.5em;
+  font-size: 2.5rem;
+  background: #2B2B2B;
+  color: #FFC32D;
+}
+
+#start-btn,
+#end-btn {
+  margin-top: 3rem;
+}
+
+#end-btn {
+  display: none;
+}
+
 /*# sourceMappingURL=style.css.map */

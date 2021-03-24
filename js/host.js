@@ -50,7 +50,12 @@ function addPlayers(users){
 		});
 		if (!found) {
 			players.push(user);
-			$("#list").append("<div><img src ='../images/icons/spaceship.png'><p>"+user.nickname+"</p></div>");
+			$('#players-list').append(
+				$('<div>')
+					.attr('id', user.nickname)
+					.addClass('player')
+					.text(user.nickname)
+			);
 		}
 	});
 	

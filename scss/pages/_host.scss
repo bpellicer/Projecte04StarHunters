@@ -1,5 +1,36 @@
 @use '../abstracts' as *;
 
-#players_list{
-    
+main {
+	height: 100vh;
+	text-align: center;
+}
+
+.title {
+	margin-top: 15vh;
+	margin-bottom: 4rem;
+}
+
+#players-list {
+    display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-column-gap: 2rem;
+	grid-row-gap: 1.5rem;
+	width: 80%;
+	margin: auto;
+
+	.player {
+		padding: .3em .5em;
+		font-size: 2.5rem;
+		background: $clr-dark-light;
+		color: $clr-pri;
+	}
+}
+
+#start-btn,
+#end-btn {
+	margin-top: 3rem;
+}
+
+#end-btn {
+	display: none;
 }
