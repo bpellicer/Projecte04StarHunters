@@ -16,6 +16,7 @@ class User {
     id;
     nickname;
     spaceship;
+    score = 0;
     isAdmin = false;
 
     constructor() {
@@ -33,6 +34,10 @@ class User {
 				players.splice(index,1);
 			}
 		});
+    }
+
+    getStar() {
+        this.score++;
     }
 }
 

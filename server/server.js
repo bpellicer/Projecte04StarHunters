@@ -162,6 +162,7 @@ function process(client, msg, user) {
 
 		case 'impact_star':
 			removeStar(client, msg.star);
+			playerGetStar(user);
 			break;
 
 		case 'start_game':
@@ -240,6 +241,16 @@ function generateStars() {
 	}, 1500);
 }
 
+/**
+ * When the player gets a star, it calls an user internal function and adds 1 to the score counter.
+ * @param {*} user 
+ */
+function playerGetStar(user){
+	user.getStar();
+	//lib.log("User "+user.nickname+" have "+user.score+" STARS!");
+}
+
+
 function removeStar(client, star) {
 	// send to all players to remove the star
 	broadcast(client, JSON.stringify({
@@ -272,9 +283,13 @@ function endGame() {
 	clearInterval(starsGenerator); // stop generating stars
 	stars = []; // clear stars list
 	// send to all players that the game has ended
+	let playersByScore = orderPlayersByScore(players);
+
 	broadcast(null, JSON.stringify({
-		'msg': 'end_game'
+		'msg': 'end_game',
+		'players':playersByScore
 	}));
+	players = [];
 }
 
 function broadcast(client, message) {
@@ -283,6 +298,28 @@ function broadcast(client, message) {
 			cli.send(message);
 		}
 	});
+}
+
+/**
+ * The function orders the array of players by Score DESC.
+ * @param {*} players 
+ */
+function orderPlayersByScore(players){
+	if (players.length == 1) return players;
+	else{
+		players.sort(compareScore);
+		return players;
+	}
+}
+
+/**
+ * Substract both scores and returns the result
+ * @param {*} playerA 
+ * @param {*} playerB 
+ * @returns 
+ */
+function compareScore(playerA,playerB){
+	return playerB.score - playerA.score;
 }
 
 module.exports.config = CONFIG;
