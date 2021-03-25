@@ -117,6 +117,19 @@ function addStar(star) {
 	stars.push(new Star(star.id, star.xPos, star.yPos));
 }
 
+/**
+ * Remove a star from the game zone and from the list of stars
+ * @param {Object} star 
+ */
+function removeStar(star) {
+	stars.forEach(function (s, pos) {
+		if (star.id === s.id) {
+			s.star.remove(); // remove the element from the game zone
+			stars.splice(pos, 1); // remove from the list
+		}
+	});
+}
+
 function init() {
 	GAME.hide();
 }

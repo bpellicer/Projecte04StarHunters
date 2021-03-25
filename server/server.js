@@ -156,12 +156,12 @@ function process(client, msg, user) {
 			createPlayer(client, msg.nickname, user);
 			break;
 
-		case 'move':
+		case 'move_spaceship':
 			// move player
 			break;
 
-		case 'impact':
-			// player impacted a star
+		case 'impact_star':
+			removeStar(client, msg.star);
 			break;
 
 		case 'start_game':
@@ -240,6 +240,21 @@ function generateStars() {
 	}, 1500);
 }
 
+function removeStar(client, star) {
+	// send to all players to remove the star
+	broadcast(client, JSON.stringify({
+		'msg': 'remove_star',
+		'star': star
+	}));
+	// remove star from the list of stars
+	stars.forEach((s, pos) => {
+		if (s.id === star.id) {
+			stars.splice(pos, 1);
+			return;
+		}
+	});
+}
+
 function startGame() {
 	lib.log('Game has started.');
 	gameStarted = true;
@@ -255,6 +270,7 @@ function endGame() {
 	gameStarted = false;
 	activeAdmin = false;
 	clearInterval(starsGenerator); // stop generating stars
+	stars = []; // clear stars list
 	// send to all players that the game has ended
 	broadcast(null, JSON.stringify({
 		'msg': 'end_game'

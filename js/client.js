@@ -9,8 +9,6 @@ function init() {
     /******* WEB SOCKET EVENTS ********/  
     
     connection.onopen = function(event) {
-       
-
         // listen for nickname form submit
         $('#nickname-form').on('submit', function(event) {
             event.preventDefault();
@@ -63,6 +61,10 @@ function init() {
             case 'add_star':
                 addStar(data.star);
                 break;
+
+            case 'remove_star':
+                removeStar(data.star);
+                break;
             
             case 'player_disconnected':
                 removePlayer(data.user);
@@ -80,6 +82,12 @@ function init() {
             case 'end_game':
                 // stop listening for keydown and keyup events on document
                 $(document).off('keydown keyup');
+                // clear stars list
+                stars = [];
+                // remove all stars from the game zone
+                $('#game-zone .spaceship').each(function (index, star) {
+                    star.remove();
+                });
                 break;
         }   
     }

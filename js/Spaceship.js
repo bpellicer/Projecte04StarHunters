@@ -16,7 +16,7 @@ class Spaceship {
 
 		// set specific image if is the local player
 		if (NICKNAME === this.nickname) {
-			path+= '_red';
+			path += '_red';
 		}
 
 		path += '.png'; // add image extension
@@ -116,6 +116,12 @@ class Spaceship {
 		// check for every star if the spaceship is overlapping
 		stars.forEach(star => {
 			if (isOverlap(star.star, this.spaceship)) {
+				// send to the server
+				connection.send(JSON.stringify({
+					'action': 'impact_star',
+					'star': star
+				}));
+
 				star.destroy();
 			}
 		});
