@@ -44,6 +44,10 @@ function init() {
 			case 'add_players':
 				addPlayers(data.players);
 				break;
+			
+			case 'player_disconnected':
+				removePlayer(data.user);
+				break;
 		}
 	}
 
@@ -79,6 +83,14 @@ function addPlayers(users){
 		}
 	});
 	
+}
+
+/**
+ * Removes the player div of the players list
+ * @param {*} user 
+ */
+function removePlayer(user){
+	$('#'+user.nickname).remove();
 }
 
 function startGame() {
