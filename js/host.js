@@ -90,7 +90,26 @@ function addPlayers(users){
  * @param {*} user 
  */
 function removePlayer(user){
+	let playerOut = searchPlayer(user);
+	players.splice(playerOut,1);			//Deletes the user that has disconnected from the server 	
 	$('#'+user.nickname).remove();
+}
+
+/**
+ * Search the user in the players array and returns the index (counter)
+ * @param {*} user 
+ * @returns counter
+ */
+function searchPlayer(user){
+	let found = false;
+	let counter = 0;
+	while(counter < players.length && !found){
+		if(players[counter].nickname == user.nickname){
+			found = true;
+		}
+		else counter++;
+	}
+	return counter;
 }
 
 function startGame() {
