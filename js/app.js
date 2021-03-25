@@ -11,7 +11,6 @@ let spaceship; // spaceship from the local player
 
 let stars = [];
 let spaceships = [];
-let endGame = false;
 
 let moveXAxis; // interval to move in 'x' axis
 let moveYAxis; // interval to move in 'y' axis
@@ -59,7 +58,7 @@ function moveKeys() {
 
 				LEFT_KEY ? $('.a').removeClass('press') : null;
 				RIGHT_KEY ? $(".d").removeClass('press') : null;
-								
+
 				clearInterval(moveXAxis);
 				moveXAxis = null;
 			} else if (UP_KEY || DOWN_KEY) {
@@ -128,6 +127,27 @@ function removeStar(star) {
 			stars.splice(pos, 1); // remove from the list
 		}
 	});
+}
+
+function startGame() {
+	$('#pregame-message').hide();
+	moveKeys();
+}
+
+function endGame() {
+	// stop listening for keydown and keyup events on document
+	$(document).off('keydown keyup');
+	// remove all stars from the game zone
+	// stars.forEach(star => {
+	// 	star.star.remove();
+	// });
+	// // remove all spaceships from the game zone
+	// spaceships.forEach(spaceship => {
+	// 	spaceship.spaceship.remove();
+	// });
+
+	// spaceships = []; // clear spaceships
+	// stars = [];	// clear stars list
 }
 
 function init() {

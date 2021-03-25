@@ -75,19 +75,11 @@ function init() {
                 break;
             
             case 'start_game':
-                $('#pregame-message').hide();
-                moveKeys();
+                startGame();
                 break;
             
             case 'end_game':
-                // stop listening for keydown and keyup events on document
-                $(document).off('keydown keyup');
-                // clear stars list
-                stars = [];
-                // remove all stars from the game zone
-                $('#game-zone .spaceship').each(function (index, star) {
-                    star.remove();
-                });
+                endGame();
                 break;
         }   
     }
