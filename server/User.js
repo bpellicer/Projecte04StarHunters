@@ -27,13 +27,16 @@ class User {
 
     close(players) {
         lib.log(`User ${this.id} disconnected.`);
-
-        // remove user from players list
-		players.forEach((player,index) => {
-			if (player.nickname === this.nickname) {
-				players.splice(index,1);
-			}
-		});
+        if (this.isAdmin) {
+            lib.log(`Administrator disconnected.`);
+        } else {   
+            // remove user from players list
+            players.forEach((player,index) => {
+                if (player.nickname === this.nickname) {
+                    players.splice(index,1);
+                }
+            });
+        }
     }
 
     getStar() {

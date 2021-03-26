@@ -111,6 +111,7 @@ wss.on("connection", (client, petition) => {
 	client.on("close", msg => {
 		if (user.isAdmin) {
 			endGame();
+			user.close();
 		} else {	
 			user.close(players);
 			
@@ -137,7 +138,7 @@ function process(client, msg, user) {
 					'msg': 'active_host'
 				}));
 			} else {
-				lib.log('Admin connected');
+				lib.log('Administrator connected.');
 				activeAdmin = true;
 				user.isAdmin = true;
 			}

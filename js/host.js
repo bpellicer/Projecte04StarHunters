@@ -10,6 +10,11 @@ function init() {
 	$(END_BTN).hide();
 
 	$(START_BTN).click(event => {
+		// check if there is at least 1 player
+		if (players.length < 1) {
+			confirm('Please wait for players to join before starting.');
+			return;
+		};
 		startGame();
 		// hide the start button and show the end button
 		$(START_BTN).hide();
