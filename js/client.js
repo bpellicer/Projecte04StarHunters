@@ -80,6 +80,7 @@ function init() {
             
             case 'end_game':
                 endGame();
+                generateScoreList(data.players);
                 break;
         }   
     }

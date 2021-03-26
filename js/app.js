@@ -1,8 +1,9 @@
 'use strict';
 
-const GAME_ZONE = $('#game-zone');
-const GAME = $("#game");
 const DIV_FORM = $("#nickname-form");
+const GAME = $("#game");
+const GAME_ZONE = $('#game-zone');
+const SCORE_LIST = $('#score-list');
 let WIDTH; // width of the game zone set by the server
 let HEIGHT; // height of the game zone set by the server
 
@@ -36,9 +37,7 @@ function moveKeys() {
 				RIGHT_KEY ? $(".d").addClass('press') : null;
 
 				// start moving
-				moveXAxis = setInterval(() => {
-					spaceship.move(x, 0);
-				}, 5);
+				spaceship.moveXAxis(x);
 			} else if (UP_KEY || DOWN_KEY) {
 				// if is moving, leave
 				if (moveYAxis) return;
@@ -49,9 +48,7 @@ function moveKeys() {
 				DOWN_KEY ? $(".s").addClass('press') : null;
 
 				// start moving
-				moveYAxis = setInterval(() => {
-					spaceship.move(0, y);
-				}, 5);
+				spaceship.moveYAxis(y);
 			}
 		} else if (e.type === 'keyup') {
 			if (LEFT_KEY || RIGHT_KEY) {
@@ -150,8 +147,33 @@ function endGame() {
 	// stars = [];	// clear stars list
 }
 
+/**
+ * Add each player setting the nickname and score in a list
+ * @param {Array} players list of players ordered by score
+ */
+function generateScoreList(players) {
+	const LIST = $('#player-list');
+	// const STAR = $('<img>').addClass('star').attr('src', 'images/icons/star.png').attr('alt', '8 bits star');
+	const STAR = `<img class="star" src="images/icons/star.png" alt="8 bits star"`;
+
+	players.forEach(player => {
+		// LIST.append(
+		// 	$('<li>')
+		// 		.addClass('player')
+		// 		.append($('<span>').addClass('nickname').text(player.nickname))
+		// 		.append($('<span>').addClass('score').text(player.score).append(STAR))
+		// );
+		let li = `<li class="player"><span class="nickname">${player.nickname}</span><span class="score">${player.score}${STAR}</span></li>`;
+		LIST.append(li);
+	});
+
+	// show the list
+	SCORE_LIST.show();
+}
+
 function init() {
 	GAME.hide();
+	SCORE_LIST.hide();
 }
 
 $(document).ready(function () {
