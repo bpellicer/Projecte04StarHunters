@@ -3,7 +3,7 @@
 let connection; // Web Socket connection
 
 function init() {
-    let domain = window.location.protocol === 'file:' ? 'localhost' : window.location.hostname;
+    let domain = window.location.protocol === 'file:' ? '192.168.0.10' : window.location.hostname;
 	connection = new WebSocket(`ws://${domain}:8180`);    
     
     /******* WEB SOCKET EVENTS ********/  
@@ -47,9 +47,6 @@ function init() {
                     'height': HEIGHT
                 });
 
-                // create the user spaceship
-                spaceship = new Spaceship(NICKNAME);
-
                 DIV_FORM.hide();
                 GAME.show();
                 break;
@@ -64,6 +61,10 @@ function init() {
 
             case 'remove_star':
                 removeStar(data.star);
+                break;
+
+            case 'move_spaceships':
+                movePlayers(data.players);
                 break;
             
             case 'player_disconnected':

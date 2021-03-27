@@ -37,6 +37,22 @@ class Star {
 		this.xPos = randNum(0, server.config.width - 64);
 		this.yPos = randNum(0, server.config.height - 64);
 	}
+
+	destroy() {
+		let id = this.id; // get the id
+
+		server.stars.forEach(function (star, pos) {
+			if (star.id === id) {
+				server.stars.splice(pos, 1);
+			}
+		});
+
+		// send to the server
+		server.broadcast(null, JSON.stringify({
+			'msg': 'remove_star',
+			'star': this
+		}));
+	}
 }
 
 module.exports = Star;

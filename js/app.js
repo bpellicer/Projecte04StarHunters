@@ -8,13 +8,9 @@ let WIDTH; // width of the game zone set by the server
 let HEIGHT; // height of the game zone set by the server
 
 let NICKNAME; // nickname from local player
-let spaceship; // spaceship from the local player
 
 let stars = [];
 let spaceships = [];
-
-let moveXAxis; // interval to move in 'x' axis
-let moveYAxis; // interval to move in 'y' axis
 
 /**
  * Listen for 'keydown' and 'keyup' events on document to move the spaceship
@@ -26,45 +22,44 @@ function moveKeys() {
 		const UP_KEY = e.key === 'w' || e.code === 'KeyW' || e.keyCode === 87;
 		const DOWN_KEY = e.key === 's' || e.code === 'KeyS' || e.keyCode === 83;
 
+		if (LEFT_KEY || RIGHT_KEY || UP_KEY || DOWN_KEY) {
+			connection.send(JSON.stringify({
+				'action': 'move_spaceship',
+				'type': e.type,
+				'keys': {
+					'left_key': LEFT_KEY,
+					'right_key': RIGHT_KEY,
+					'up_key': UP_KEY,
+					'down_key': DOWN_KEY,
+				}
+			}));
+		}
+
+		// animate keys when they are pressed and stop being pressed
 		if (e.type === 'keydown') {
-			if (LEFT_KEY || RIGHT_KEY) {
-				//if is moving, leave
-				if (moveXAxis) return;
-				// check in which direction to move
-				let x = LEFT_KEY ? -1 : RIGHT_KEY ? 1 : 0;
-
-				LEFT_KEY ? $('.a').addClass('press') : null;
-				RIGHT_KEY ? $(".d").addClass('press') : null;
-
-				// start moving
-				spaceship.moveXAxis(x);
-			} else if (UP_KEY || DOWN_KEY) {
-				// if is moving, leave
-				if (moveYAxis) return;
-				// check in which direction move
-				let y = UP_KEY ? -1 : DOWN_KEY ? 1 : 0;
-
-				UP_KEY ? $(".w").addClass('press') : null;
-				DOWN_KEY ? $(".s").addClass('press') : null;
-
-				// start moving
-				spaceship.moveYAxis(y);
+			if (LEFT_KEY) {
+				$('.a').addClass('press');
+			} else if (RIGHT_KEY) {
+				$(".d").addClass('press');
 			}
+
+			if (UP_KEY) {
+				$(".w").addClass('press');
+			} else if (DOWN_KEY) {
+				$(".s").addClass('press');
+			}
+
 		} else if (e.type === 'keyup') {
-			if (LEFT_KEY || RIGHT_KEY) {
+			if (LEFT_KEY) {
+				$('.a').removeClass('press');
+			} else if (RIGHT_KEY) {
+				$(".d").removeClass('press');
+			}
 
-				LEFT_KEY ? $('.a').removeClass('press') : null;
-				RIGHT_KEY ? $(".d").removeClass('press') : null;
-
-				clearInterval(moveXAxis);
-				moveXAxis = null;
-			} else if (UP_KEY || DOWN_KEY) {
-
-				UP_KEY ? $('.w').removeClass('press') : null;
-				DOWN_KEY ? $(".s").removeClass('press') : null;
-
-				clearInterval(moveYAxis);
-				moveYAxis = null;
+			if (UP_KEY) {
+				$('.w').removeClass('press');
+			} else if (DOWN_KEY) {
+				$(".s").removeClass('press');
 			}
 		}
 	});
@@ -74,7 +69,7 @@ function addPlayers(players) {
 	// for each player create a new spaceship if was not created before
 	players.forEach(player => {
 		// prevent creating a second spaceship for the local player
-		if (player.nickname === NICKNAME) return;
+		// if (player.nickname === NICKNAME) return;
 
 		let found = false;
 		spaceships.forEach(spaceship => {
@@ -101,6 +96,16 @@ function removePlayer(user) {
 			spaceships.splice(pos, 1);
 			return;
 		}
+	});
+}
+
+function movePlayers(players) {
+	players.forEach(p => {
+		spaceships.forEach(s => {
+			if (p.nickname === s.nickname) {
+				s.move(p.spaceship.xPos, p.spaceship.yPos);
+			}
+		});
 	});
 }
 
@@ -134,6 +139,7 @@ function startGame() {
 function endGame() {
 	// stop listening for keydown and keyup events on document
 	$(document).off('keydown keyup');
+	// clearInterval(moveSpaceship);
 	// remove all stars from the game zone
 	// stars.forEach(star => {
 	// 	star.star.remove();
@@ -163,7 +169,7 @@ function generateScoreList(players) {
 		// 		.append($('<span>').addClass('nickname').text(player.nickname))
 		// 		.append($('<span>').addClass('score').text(player.score).append(STAR))
 		// );
-		let li = `<li class="player"><span class="nickname">${player.nickname}</span><span class="score">${player.score}${STAR}</span></li>`;
+		let li = `<li class="player"><span class="nickname">${player.nickname}</span><span class="score">${player.spaceship.score}${STAR}</span></li>`;
 		LIST.append(li);
 	});
 

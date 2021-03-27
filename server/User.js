@@ -16,8 +16,9 @@ class User {
     id;
     nickname;
     spaceship;
-    score = 0;
     isAdmin = false;
+    moveX = 0;
+    moveY = 0;
 
     constructor() {
         this.id = User.counter();
@@ -37,10 +38,6 @@ class User {
                 }
             });
         }
-    }
-
-    getStar() {
-        this.score++;
     }
 }
 

@@ -10,6 +10,7 @@ const CONFIG = {
 let players = [];
 let stars = [];
 let starsGenerator; // interval to generate stars
+let moveSpaceships; // interval to move players
 let gameStarted = false; // to check if the game started
 let activeAdmin = false; // to check when there is someone hosting the game
 
@@ -158,7 +159,7 @@ function process(client, msg, user) {
 			break;
 
 		case 'move_spaceship':
-			// move player
+			moveSpaceship(user, msg.type, msg.keys);
 			break;
 
 		case 'impact_star':
@@ -242,15 +243,49 @@ function generateStars() {
 	}, 1500);
 }
 
-/**
- * When the player gets a star, it calls an user internal function and adds 1 to the score counter.
- * @param {*} user 
- */
-function playerGetStar(user){
-	user.getStar();
-	//lib.log("User "+user.nickname+" have "+user.score+" STARS!");
+function moveSpaceship(user, type, keys) {
+	if (type === 'keydown') {
+		if (keys.left_key) {
+			user.moveX = -1;
+		} else if (keys.right_key) {
+			user.moveX = 1;
+		}
+
+		if (keys.up_key) {
+			user.moveY = -1;
+		} else if (keys.down_key) {
+			user.moveY = 1;
+		}
+		// user.moveX = (keys.left_key && keys.right_key) ? 0 : keys.left_key ? -1 : keys.right_key ? 1 : 0;
+		// user.moveY = (keys.up_key && keys.down_key) ? 0 : keys.up_key ? -1 : keys.down_key ? 1 : 0;
+	} else if (type === 'keyup') {
+		if (user.moveX === -1 && keys.left_key) {
+			user.moveX = 0;
+		} else if (user.moveX === 1 && keys.right_key) {
+			user.moveX = 0;
+		}
+
+		if (user.moveY === -1 && keys.up_key) {
+			user.moveY = 0;
+		} else if (user.moveY === 1 && keys.down_key) {
+			user.moveY = 0;
+		}
+	}
 }
 
+function movePlayers() {
+	moveSpaceships = setInterval(() => {
+		players.forEach(player => {
+			player.spaceship.move(player.moveX, player.moveY);
+		});
+
+		// send to all players the updated coordinates of all players
+		broadcast(null, JSON.stringify({
+			'msg': 'move_spaceships',
+			'players': players
+		}));
+	}, 10);
+}
 
 function removeStar(client, star) {
 	// send to all players to remove the star
@@ -271,6 +306,7 @@ function startGame() {
 	lib.log('Game has started.');
 	gameStarted = true;
 	generateStars(); // start generating stars
+	movePlayers();
 	// send to all players that the game starts
 	broadcast(null, JSON.stringify({
 		'msg': 'start_game'
@@ -282,28 +318,21 @@ function endGame() {
 	gameStarted = false;
 	activeAdmin = false;
 	clearInterval(starsGenerator); // stop generating stars
+	clearInterval(moveSpaceships);
 	stars = []; // clear stars list
 	// send to all players that the game has ended
 	let playersByScore = orderPlayersByScore(players);
 
 	broadcast(null, JSON.stringify({
 		'msg': 'end_game',
-		'players':playersByScore
+		'players': playersByScore
 	}));
 	players = [];
 }
 
-function broadcast(client, message) {
-	wss.clients.forEach(function each(cli) {
-		if (cli !== client && cli.readyState === WebSocket.OPEN) {
-			cli.send(message);
-		}
-	});
-}
-
 /**
  * The function orders the array of players by Score DESC.
- * @param {*} players 
+ * @param {Array} players 
  */
 function orderPlayersByScore(players){
 	if (players.length == 1) return players;
@@ -315,12 +344,22 @@ function orderPlayersByScore(players){
 
 /**
  * Substract both scores and returns the result
- * @param {*} playerA 
- * @param {*} playerB 
+ * @param {User} playerA 
+ * @param {User} playerB 
  * @returns 
  */
 function compareScore(playerA,playerB){
-	return playerB.score - playerA.score;
+	return playerB.spaceship.score - playerA.spaceship.score;
+}
+
+function broadcast(client, message) {
+	wss.clients.forEach(function each(cli) {
+		if (cli !== client && cli.readyState === WebSocket.OPEN) {
+			cli.send(message);
+		}
+	});
 }
 
 module.exports.config = CONFIG;
+module.exports.stars = stars;
+module.exports.broadcast = broadcast;
