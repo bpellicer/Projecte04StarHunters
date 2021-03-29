@@ -164,7 +164,7 @@ function process(client, msg, user) {
 
 		case 'impact_star':
 			removeStar(client, msg.star);
-			playerGetStar(user);
+			//playerGetStar(user);
 			break;
 
 		case 'start_game':
@@ -246,28 +246,28 @@ function generateStars() {
 function moveSpaceship(user, type, keys) {
 	if (type === 'keydown') {
 		if (keys.left_key) {
-			user.moveX = -1;
+			user.moveX = -3;
 		} else if (keys.right_key) {
-			user.moveX = 1;
+			user.moveX = 3;
 		}
 
 		if (keys.up_key) {
-			user.moveY = -1;
+			user.moveY = -3;
 		} else if (keys.down_key) {
-			user.moveY = 1;
+			user.moveY = 3;
 		}
 		// user.moveX = (keys.left_key && keys.right_key) ? 0 : keys.left_key ? -1 : keys.right_key ? 1 : 0;
 		// user.moveY = (keys.up_key && keys.down_key) ? 0 : keys.up_key ? -1 : keys.down_key ? 1 : 0;
 	} else if (type === 'keyup') {
-		if (user.moveX === -1 && keys.left_key) {
+		if (user.moveX === -3 && keys.left_key) {
 			user.moveX = 0;
-		} else if (user.moveX === 1 && keys.right_key) {
+		} else if (user.moveX === 3 && keys.right_key) {
 			user.moveX = 0;
 		}
 
-		if (user.moveY === -1 && keys.up_key) {
+		if (user.moveY === -3 && keys.up_key) {
 			user.moveY = 0;
-		} else if (user.moveY === 1 && keys.down_key) {
+		} else if (user.moveY === 3 && keys.down_key) {
 			user.moveY = 0;
 		}
 	}
@@ -291,7 +291,7 @@ function removeStar(client, star) {
 	// send to all players to remove the star
 	broadcast(client, JSON.stringify({
 		'msg': 'remove_star',
-		'star': star
+		'star': star,
 	}));
 	// remove star from the list of stars
 	stars.forEach((s, pos) => {
