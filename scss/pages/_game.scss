@@ -127,12 +127,13 @@
 	}
 }
 
-.starsCounterDiv{
-	position: absolute;
+.starsCounterDiv {
+	position: relative;
 	left: 5%;
-	top: 10%;
+	top: 0;
+	transform: translateY(-100%);
 
-	label{
+	span {
 		font-size: 35px;
 	}
 }

@@ -338,12 +338,13 @@ main h2 {
 }
 
 .starsCounterDiv {
-  position: absolute;
+  position: relative;
   left: 5%;
-  top: 10%;
+  top: 0;
+  transform: translateY(-100%);
 }
 
-.starsCounterDiv label {
+.starsCounterDiv span {
   font-size: 35px;
 }
 
