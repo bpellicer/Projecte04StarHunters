@@ -148,7 +148,7 @@ input:focus {
 
 .btn.primary.inverse {
   color: #FFC32D;
-  background: transparent;
+  background: #1A1A1A;
   border-color: #FFC32D;
 }
 
@@ -221,12 +221,14 @@ main h2 {
   position: absolute;
   height: 88px;
   width: 88px;
+  z-index: 20;
 }
 
 #game-zone .star {
   position: absolute;
   height: 64px;
   width: 64px;
+  z-index: 10;
 }
 
 #pregame-message {
@@ -234,7 +236,7 @@ main h2 {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 20;
+  z-index: 30;
   transition: transform 500ms ease;
   animation-name: scale;
   animation-duration: 2s;

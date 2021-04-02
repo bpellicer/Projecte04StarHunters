@@ -14,12 +14,14 @@
 		position: absolute;
 		height: 88px;
 		width: 88px;
+		z-index: 20;
 	}
 
 	.star {
 		position: absolute;
 		height: 64px;
 		width: 64px;
+		z-index: 10;
 	}
 }
 
@@ -28,7 +30,7 @@
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%,-50%);
-	z-index: 20;
+	z-index: 30;
 	transition: transform 500ms ease;
 	animation-name: scale;
 	animation-duration: 2s;

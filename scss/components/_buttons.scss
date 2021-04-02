@@ -19,7 +19,7 @@
 
 		&.inverse {
 			color: $clr-pri;
-			background: transparent;
+			background: $clr-dark;
 			border-color: $clr-pri;
 		}
 	}
