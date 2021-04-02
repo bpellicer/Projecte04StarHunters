@@ -53,6 +53,12 @@ function init() {
 			case 'player_disconnected':
 				removePlayer(data.user);
 				break;
+
+			case 'end_game':
+				players.forEach(player => {
+					removePlayer(player);
+				});
+				break;
 		}
 	}
 
@@ -92,7 +98,7 @@ function addPlayers(users){
 
 /**
  * Removes the player div of the players list
- * @param {*} user 
+ * @param {Object} user 
  */
 function removePlayer(user){
 	let playerOut = searchPlayer(user);
@@ -102,7 +108,7 @@ function removePlayer(user){
 
 /**
  * Search the user in the players array and returns the index (counter)
- * @param {*} user 
+ * @param {Object} user 
  * @returns counter
  */
 function searchPlayer(user){
