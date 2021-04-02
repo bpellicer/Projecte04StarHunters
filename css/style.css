@@ -336,6 +336,16 @@ main h2 {
   margin-left: 1rem;
 }
 
+.starsCounterDiv {
+  position: absolute;
+  left: 5%;
+  top: 10%;
+}
+
+.starsCounterDiv label {
+  font-size: 35px;
+}
+
 .admin-zone {
   height: 100vh;
   text-align: center;
