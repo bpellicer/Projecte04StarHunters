@@ -296,6 +296,7 @@ main h2 {
   text-align: center;
   background: #1A1A1A;
   box-shadow: 0 0 0.75rem 0 rgba(255, 255, 255, 0.25);
+  z-index: 100;
 }
 
 #score-list h3 {
